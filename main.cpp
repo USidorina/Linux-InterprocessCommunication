@@ -31,12 +31,10 @@ int main(void) {
     if (pid) {
 
     	parent.run(connector, sem_parent, sem_child);
-        std::cout << "parent finished" << std::endl;
     } 
     else if (!pid) {
 
     	child.run(connector, sem_parent, sem_child);
-        std::cout << "child finished" << std::endl;
         exit(0);
     } 
     else {
@@ -46,11 +44,17 @@ int main(void) {
         sem_close(sem_parent);
         sem_close(sem_child);
 
+        sem_unlink("/sem_parent");
+        sem_unlink("/sem_child");
+
     	exit(1);
     }
 
     sem_close(sem_parent);
     sem_close(sem_child);
+
+    sem_unlink("/sem_parent");
+    sem_unlink("/sem_child");
 
 	exit(0);
 }
